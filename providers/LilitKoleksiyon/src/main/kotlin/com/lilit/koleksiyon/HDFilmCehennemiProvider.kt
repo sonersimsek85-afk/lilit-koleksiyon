@@ -154,7 +154,8 @@ class HDFilmCehennemiProvider : MainAPI() {
         callback(
             newExtractorLink(name, name, "https://fastplay.mom$streamPath", ExtractorLinkType.M3U8) {
                 this.referer = fastplayUrl
-                this.headers = siteHeaders + mapOf("X-Sp" to xSp(sp, spT), "Referer" to fastplayUrl)
+                // fastplay.mom 404 verir: tam Chrome UA'sını filtreliyor, kısa UA kabul ediliyor.
+                this.headers = mapOf("user-agent" to "Mozilla/5.0", "Referer" to fastplayUrl)
             }
         )
         return true

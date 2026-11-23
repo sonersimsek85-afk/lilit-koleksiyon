@@ -1,4 +1,4 @@
-version = 2
+version = 3
 
 cloudstream {
     description = "Lilit Koleksiyon — HDFilmCehennemi, FullHDFilmizlesene, DiziPal, DiziYou ve Anizium tek eklentide"
