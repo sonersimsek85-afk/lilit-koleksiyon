@@ -14,6 +14,7 @@ import com.lagradost.cloudstream3.app
 import com.lagradost.cloudstream3.fixUrlNull
 import com.lagradost.cloudstream3.mainPageOf
 import com.lagradost.cloudstream3.newHomePageResponse
+import com.lagradost.cloudstream3.newEpisode
 import com.lagradost.cloudstream3.newMovieLoadResponse
 import com.lagradost.cloudstream3.newMovieSearchResponse
 import com.lagradost.cloudstream3.newTvSeriesLoadResponse
@@ -93,7 +94,22 @@ class HDFilmCehennemiProvider : MainAPI() {
         val poster = fixUrlNull(doc.selectFirst("meta[property=og:image]")?.attr("content"))
         val plot = doc.selectFirst("meta[name=description]")?.attr("content")?.trim()
         if (url.contains("/dizi/")) {
-            return newTvSeriesLoadResponse(title, url, TvType.TvSeries, emptyList()) {
+            val episodes = doc.select("#seasons div.se-c").flatMap { block ->
+                val season = block.selectFirst("span.se-t")?.text()?.trim()?.toIntOrNull() ?: 1
+                block.select("ul.episodios li").mapNotNull { li ->
+                    val anchor = li.selectFirst("h2.episodiotitle a[href]") ?: return@mapNotNull null
+                    val href = fixUrlNull(anchor.attr("href")) ?: return@mapNotNull null
+                    val number = li.selectFirst("div.numerando")?.text()?.trim()?.substringAfterLast('-')?.trim()?.toIntOrNull()
+                        ?: Regex("""(\d+)\.\s*B[oö]l[oü]m""").find(anchor.text())?.groupValues?.get(1)?.toIntOrNull()
+                        ?: return@mapNotNull null
+                    newEpisode(href) {
+                        this.season = season
+                        this.episode = number
+                        this.name = anchor.text().substringBefore("  ").trim().ifBlank { null }
+                    }
+                }
+            }
+            return newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
                 this.posterUrl = poster
                 this.plot = plot
             }
