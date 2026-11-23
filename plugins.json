@@ -1,10 +1,10 @@
 [
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=anizium.co&sz=%size%",
-        "fileHash": "sha256-cb871433928f28b24cf8053719e80573da3501f5e6443caeba69990f8a0db3e7",
+        "fileHash": "sha256-d2fbe58a895bf21bb356eabe2ad1ebbcb09a7fccdab41a99f1d90f7f6ef260d7",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sonersimsek85-afk/lilit-koleksiyon",
-        "fileSize": 130517,
+        "fileSize": 129932,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -16,7 +16,7 @@
             "TvSeries",
             "Anime"
         ],
-        "version": 2,
+        "version": 3,
         "internalName": "LilitKoleksiyon",
         "description": "Lilit Koleksiyon \u2014 HDFilmCehennemi, FullHDFilmizlesene, DiziPal, DiziYou ve Anizium tek eklentide",
         "url": "https://raw.githubusercontent.com/sonersimsek85-afk/lilit-koleksiyon/builds/LilitKoleksiyon.cs3",
