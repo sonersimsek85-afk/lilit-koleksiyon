@@ -3,6 +3,7 @@
 CloudStream için tek eklenti: **HDFilmCehennemi · FullHDFilmizlesene · DiziPal · DiziYou · Anizium**.
 
 Depo:
+- **Kısa kurulum adresi: `https://v.gd/lilitk`** (başındaki `https://` şart; tek başına `v.gd/lilitk` çalışmaz)
 - `https://raw.githubusercontent.com/sonersimsek85-afk/lilit-koleksiyon/main/repo.json`
 - yedek (jsdelivr): `https://cdn.jsdelivr.net/gh/sonersimsek85-afk/lilit-koleksiyon@main/repo.json`
 
