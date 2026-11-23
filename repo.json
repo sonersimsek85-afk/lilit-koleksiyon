@@ -1,0 +1,8 @@
+{
+  "name": "Lilit Koleksiyon",
+  "description": "HDFilmCehennemi, FullHDFilmizlesene, DiziPal, DiziYou ve Anizium — tek CloudStream eklentisi",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/sonersimsek85-afk/lilit-koleksiyon/builds/plugins.json"
+  ]
+}

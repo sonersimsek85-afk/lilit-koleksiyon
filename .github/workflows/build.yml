@@ -1,0 +1,72 @@
+name: Lilit Koleksiyon derle
+
+concurrency:
+  group: lilit-koleksiyon-build
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/caches/cloudstream
+            ~/.gradle/caches/build-cache-1
+            ~/.gradle/wrapper
+          key: gradle-v1-${{ hashFiles('build.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-v1-
+
+      - name: Android SDK
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          TOOL="$SDK/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$TOOL" ]; then TOOL="$(command -v sdkmanager)"; fi
+          yes | "$TOOL" --licenses >/dev/null 2>&1 || true
+          "$TOOL" "platforms;android-35" "build-tools;35.0.0" >/dev/null
+
+      - name: Derle
+        run: |
+          chmod +x gradlew
+          ./gradlew LilitKoleksiyon:make makePluginsJson --console=plain
+          test -f providers/LilitKoleksiyon/build/LilitKoleksiyon.cs3
+
+      - name: builds dalına yayınla
+        run: |
+          mkdir -p /tmp/out
+          cp providers/LilitKoleksiyon/build/LilitKoleksiyon.cs3 /tmp/out/
+          cp build/plugins.json /tmp/out/
+          git fetch origin builds || true
+          if git show-ref --verify --quiet refs/remotes/origin/builds; then
+            git checkout -B builds origin/builds
+          else
+            git checkout --orphan builds
+            git rm -rf --cached . >/dev/null 2>&1 || true
+            find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
+          fi
+          cp /tmp/out/* .
+          git config user.name "lilit-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Çıktı değişmedi."
+          else
+            git commit -m "Derleme $GITHUB_SHA"
+            git push --force origin builds
+          fi
