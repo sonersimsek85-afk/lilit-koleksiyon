@@ -63,7 +63,7 @@ jobs:
           cp /tmp/out/* .
           git config user.name "lilit-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -A
+          git add -f LilitKoleksiyon.cs3 plugins.json
           if git diff --cached --quiet; then
             echo "Çıktı değişmedi."
           else
