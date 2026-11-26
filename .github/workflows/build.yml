@@ -52,6 +52,7 @@ jobs:
           mkdir -p /tmp/out
           cp providers/LilitKoleksiyon/build/LilitKoleksiyon.cs3 /tmp/out/
           cp build/plugins.json /tmp/out/
+          cp repo.json /tmp/out/
           git fetch origin builds || true
           if git show-ref --verify --quiet refs/remotes/origin/builds; then
             git checkout -B builds origin/builds
@@ -63,7 +64,7 @@ jobs:
           cp /tmp/out/* .
           git config user.name "lilit-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -f LilitKoleksiyon.cs3 plugins.json
+          git add -f LilitKoleksiyon.cs3 plugins.json repo.json
           if git diff --cached --quiet; then
             echo "Çıktı değişmedi."
           else
